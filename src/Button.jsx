@@ -1,8 +1,9 @@
 import React from 'react'
 
-export const Button = ({cls, label}) => {
+export const Button = ({cls, label, handleOnButtonClick}) => {
   
-    return <div className={'btn ' + cls}>{label}</div>; //reusable coponent
+    return <div onClick={() => handleOnButtonClick(label)}
+    className={'btn ' + cls}>{label}</div>; //reusable coponent
   
 };
 

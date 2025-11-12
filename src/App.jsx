@@ -4,6 +4,72 @@ import Button from './Button';
 
 function App() {
 
+  // const [strToDisplay, setStrToDisplay] = useState("");
+
+  const buttonAction = (value) => {
+  displayElm.classList.remove("prank");
+
+  if (value === "AC") {
+    strToDisplay = "";
+    return display(strToDisplay);
+  }
+
+  if (value === "C") {
+    strToDisplay = strToDisplay.slice(0, -1);
+    return display(strToDisplay);
+  }
+
+  if (value === "=" || value === "Enter") {
+    lastOperator = "";
+    //get the last char
+    const lastChar = strToDisplay[strToDisplay.length - 1];
+
+    // check if it is one of the operators
+    if (operators.includes(lastChar)) {
+      strToDisplay = strToDisplay.slice(0, -1);
+    }
+
+    return displayTotal();
+  }
+
+  // show only last clicked operator
+  if (operators.includes(value)) {
+    lastOperator = value;
+    //get the last char
+    const lastChar = strToDisplay[strToDisplay.length - 1];
+
+    if (operators.includes(lastChar)) {
+      strToDisplay = strToDisplay.slice(0, -1);
+    }
+  }
+
+  //handle the dot click
+
+  if (value === ".") {
+    const lastOperatorIndex = strToDisplay.lastIndexOf(lastOperator);
+
+    const lastNumebrSet = strToDisplay.slice(lastOperatorIndex);
+
+    if (lastNumebrSet.includes(".")) {
+      return;
+    }
+
+    if (!lastOperator && strToDisplay.includes(".")) {
+      return;
+    }
+  }
+
+  strToDisplay += value;
+
+  display(strToDisplay);
+};
+
+const handleOnButtonClick = (value) => {
+  console.log(value);
+  buttonAction(value);
+}
+
+
   const btns = [{
     cls:"btn-ac", label:"AC",
   }, 
@@ -74,7 +140,8 @@ function App() {
         {/* looping btn array */}
 
         {
-          btns.map((btn, i) =>  (<Button key={i} {...btn} />))
+          btns.map((btn, i) =>  (<Button key={i} {...btn} 
+          handleOnButtonClick = {handleOnButtonClick}/>))
           // <Button key={i} cls={btn.cls} label={btn.label}/>)
         }
 
