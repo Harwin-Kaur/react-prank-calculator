@@ -1,4 +1,3 @@
-
 import './App.css';
 import Button from './Button';
 
@@ -65,7 +64,7 @@ function App() {
 };
 
 const handleOnButtonClick = (value) => {
-  console.log(value);
+  // console.log(value);
   buttonAction(value);
 }
 
