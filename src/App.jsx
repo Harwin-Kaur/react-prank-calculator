@@ -1,31 +1,38 @@
+import { useState } from 'react';
 import './App.css';
 import Button from './Button';
 
-function App() {
 
-  // const [strToDisplay, setStrToDisplay] = useState("");
+const operators = ["%", "/", "*", "-", "+"];
+
+const App = () => {
+
+  const [strToDisplay, setStrToDisplay] = useState("");
+  const [lastOperator, setLastOperator] = useState("");
 
   const buttonAction = (value) => {
-  displayElm.classList.remove("prank");
+  
 
   if (value === "AC") {
-    strToDisplay = "";
-    return display(strToDisplay);
+    setStrToDisplay("");
+    setLastOperator("");
+    return;
   }
 
   if (value === "C") {
-    strToDisplay = strToDisplay.slice(0, -1);
-    return display(strToDisplay);
+    setStrToDisplay(strToDisplay.slice(0, -1));
+    return;
   }
 
   if (value === "=" || value === "Enter") {
-    lastOperator = "";
+    setLastOperator("");
     //get the last char
     const lastChar = strToDisplay[strToDisplay.length - 1];
 
     // check if it is one of the operators
     if (operators.includes(lastChar)) {
       strToDisplay = strToDisplay.slice(0, -1);
+      strToDisplay();
     }
 
     return displayTotal();
@@ -33,12 +40,13 @@ function App() {
 
   // show only last clicked operator
   if (operators.includes(value)) {
-    lastOperator = value;
+    setLastOperator(value);
     //get the last char
     const lastChar = strToDisplay[strToDisplay.length - 1];
 
     if (operators.includes(lastChar)) {
-      strToDisplay = strToDisplay.slice(0, -1);
+      setStrToDisplay(strToDisplay.slice(0, -1) + value);
+      return;
     }
   }
 
@@ -58,15 +66,33 @@ function App() {
     }
   }
 
-  strToDisplay += value;
+  setStrToDisplay(strToDisplay + value);
+};
 
-  display(strToDisplay);
+//calculate total
+
+const displayTotal = () => {
+  const extraValue = randomValue();
+  if (extraValue) {
+    // displayElm.classList.add("prank");
+    // audio.play();
+  }
+
+  const total = eval(strToDisplay) + extraValue;
+
+  setStrToDisplay(total.toString());
+};
+
+const randomValue = () => {
+  const num = Math.round(Math.random() * 10); // 0 - 10
+  return num < 4 ? num : 0;
 };
 
 const handleOnButtonClick = (value) => {
-  // console.log(value);
+  console.log(value);
   buttonAction(value);
 }
+
 
 
   const btns = [{
@@ -132,7 +158,7 @@ const handleOnButtonClick = (value) => {
       <div className="wrapper flex-center">
 
       <div className="calculator">
-        <div className="display arbutus-regular">0.0</div>
+        <div className="display arbutus-regular">{strToDisplay || "0.00"}</div>
         {/* <div className="btn btn-ac">AC</div>
         <div className="btn btn-c">C</div> */}
 
