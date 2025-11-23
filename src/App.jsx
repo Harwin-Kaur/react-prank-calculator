@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { use, useState } from 'react';
 import './App.css';
 import Button from './Button';
+import aa from './assets/aa.wav'
 
+const audio = new Audio(aa);
 
 const operators = ["%", "/", "*", "-", "+"];
 
@@ -9,8 +11,12 @@ const App = () => {
 
   const [strToDisplay, setStrToDisplay] = useState("");
   const [lastOperator, setLastOperator] = useState("");
+  const [isMouseDown, setIsMouseDown] = useState();
+  const [isPrank, setIsPrank] = useState(false);
 
-  const buttonAction = (value) => {
+  const buttonAction = (value) => { 
+
+    isPrank && setIsPrank(false);
   
 
   if (value === "AC") {
@@ -74,7 +80,7 @@ const App = () => {
 const displayTotal = () => {
   const extraValue = randomValue();
   if (extraValue) {
-    // displayElm.classList.add("prank");
+    setIsPrank(true);
     // audio.play();
   }
 
@@ -89,11 +95,16 @@ const randomValue = () => {
 };
 
 const handleOnButtonClick = (value) => {
-  console.log(value);
+  setIsMouseDown()
   buttonAction(value);
 }
 
+const handleOnMouseDown = (value) => {
+  setIsMouseDown(value);
 
+}
+
+console.log(isMouseDown);
 
   const btns = [{
     cls:"btn-ac", label:"AC",
@@ -153,12 +164,18 @@ const handleOnButtonClick = (value) => {
     cls:"btn-equal", label:"=",
   }
 ];
-  return (
+
+  const btnStyle = {
+    transform: isMouseDown ? 'scale(0.9)': 'scale(1)',
+    transition: 'transform 0.2s',
+  };
+
+  return (  
     <>
       <div className="wrapper flex-center">
 
       <div className="calculator">
-        <div className="display arbutus-regular">{strToDisplay || "0.00"}</div>
+        <div className={isPrank ? "display arbutus-regular prank" : "display arbutus-regular"}>{strToDisplay || "0.00"}</div>
         {/* <div className="btn btn-ac">AC</div>
         <div className="btn btn-c">C</div> */}
 
@@ -166,7 +183,9 @@ const handleOnButtonClick = (value) => {
 
         {
           btns.map((btn, i) =>  (<Button key={i} {...btn} 
-          handleOnButtonClick = {handleOnButtonClick}/>))
+          handleOnButtonClick = {handleOnButtonClick}
+          handleOnMouseDown = {handleOnMouseDown}
+          isMouseDown={isMouseDown}/>))
           // <Button key={i} cls={btn.cls} label={btn.label}/>)
         }
 
