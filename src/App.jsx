@@ -81,7 +81,7 @@ const displayTotal = () => {
   const extraValue = randomValue();
   if (extraValue) {
     setIsPrank(true);
-    // audio.play();
+    audio.play();
   }
 
   const total = eval(strToDisplay) + extraValue;
