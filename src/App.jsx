@@ -1,9 +1,9 @@
-import { use, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import './App.css';
 import Button from './Button';
-import aa from './assets/aa.wav'
+// import aa from './assets/aa.wav'
 
-// const audio = new Audio(aa);
+const audio = new Audio(aa);
 
 const operators = ["%", "/", "*", "-", "+"];
 
@@ -13,6 +13,25 @@ const App = () => {
   const [lastOperator, setLastOperator] = useState("");
   const [isMouseDown, setIsMouseDown] = useState();
   const [isPrank, setIsPrank] = useState(false);
+
+  const isEventAttached = useRef(false);
+
+  useEffect(() => {
+    //binding keyboard with browser app
+    !isEventAttached &&
+    window.addEventListener("keypress", (e) => {
+    console.log(e);
+    const value = e.key;
+
+    if(e.code.includes("Key")){
+        return;
+    }
+    
+    buttonAction(value);
+});
+   
+   isEventAttached.current = true;
+  }, []);
 
   const buttonAction = (value) => { 
 
@@ -37,8 +56,9 @@ const App = () => {
 
     // check if it is one of the operators
     if (operators.includes(lastChar)) {
-      strToDisplay = strToDisplay.slice(0, -1);
-      strToDisplay();
+      setStrToDisplay(strToDisplay.slice(0, -1));
+
+      // strToDisplay();
     }
 
     return displayTotal();
