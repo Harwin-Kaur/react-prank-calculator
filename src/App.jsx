@@ -4,7 +4,7 @@ import './App.css';
 import Button from './Button';
 import aa from './assets/aa.wav';
 
-// const audio = new Audio(aa);
+const audio = new Audio(aa);
 
 const operators = ["%", "/", "*", "-", "+"];
 
